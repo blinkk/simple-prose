@@ -1,0 +1,39 @@
+@import "../config"
+
+body
+  background-color: $color-back
+  font-family: 'Roboto', sans-serif
+  margin: 0
+  padding: 0
+
+  *
+    box-sizing: border-box
+
+.container
+  display: flex
+  flex-flow: row
+  min-height: 100vh
+
+.content_grid
+  display: grid
+  flex-grow: 1
+  grid-template-columns: 1fr 1fr
+  column-gap: $pad
+
+.content_grid__section
+  align-items: stretch
+  display: flex
+  flex-flow: column
+  flex-grow: 1
+  padding: $pad
+
+.editor__config
+  pre
+    background: $color-secondary-light
+    color: $color-on-secondary-light
+    border: $border-size solid $color-dark-border
+    padding: $pad
+    overflow: auto
+
+  code
+    font-family: $font-family-mono
