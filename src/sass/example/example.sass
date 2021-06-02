@@ -3,6 +3,7 @@
 body
   background-color: $color-back
   font-family: 'Roboto', sans-serif
+  font-size: $font-size
   margin: 0
   padding: 0
 
@@ -11,8 +12,11 @@ body
 
 .container
   display: flex
-  flex-flow: row
+  flex-flow: column
   min-height: 100vh
+
+.content
+  padding: 0 $pad
 
 .content_grid
   display: grid
@@ -25,15 +29,25 @@ body
   display: flex
   flex-flow: column
   flex-grow: 1
-  padding: $pad
+  padding: 0 $pad
 
-.editor__config
+.editor__demo
+  height: 25vh
+  min-height: 10em
+
+.editor__output
   pre
-    background: $color-secondary-light
-    color: $color-on-secondary-light
-    border: $border-size solid $color-dark-border
-    padding: $pad
+    height: 15vh
+    min-height: 10em
     overflow: auto
 
-  code
-    font-family: $font-family-mono
+pre
+  background: $color-secondary-light
+  color: $color-on-secondary-light
+  border: $border-size solid $color-dark-border
+  font-size: $font-size-small
+  padding: $pad
+  overflow: auto
+
+code
+  font-family: $font-family-mono
