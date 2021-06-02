@@ -1,5 +1,6 @@
 import * as HtmlExtensions from '../extensions/html';
 import * as MarkdownExtensions from '../extensions/markdown';
+import {html} from 'js-beautify';
 
 import {
   EditorComponent,
@@ -9,10 +10,11 @@ import {
 
 import {ExtensionComponent} from '../extensions/extension';
 import {HtmlEditor} from '../editor/htmlEditor';
-import {MarkdownEditor} from '../editor/markdownEditor';
+// import {MarkdownEditor} from '../editor/markdownEditor';
 import Prism from 'prismjs';
 
-const EDITORS: Array<EditorConstructor> = [HtmlEditor, MarkdownEditor];
+// const EDITORS: Array<EditorConstructor> = [HtmlEditor, MarkdownEditor];
+const EDITORS: Array<EditorConstructor> = [HtmlEditor];
 
 /**
  * Understands the structure of the editor page and crafts the example experience
@@ -43,7 +45,9 @@ class ExampleEditor {
 
     for (const editor of EDITORS) {
       if (this.typeClass === editor.name) {
-        this.editor = new editor(this.demo, this.options);
+        this.editor = new editor(this.demo, this.options).onUpdate(editor => {
+          this.showOutput();
+        });
         break;
       }
     }
@@ -83,11 +87,11 @@ const editor = new ${
 
   showOutput() {
     const prismLanguage = Prism.languages.html;
-
-    const output = '<p>Test</p>';
+    const output = this.editor?.value || '';
+    const beautiful = html(output);
 
     this.output.innerHTML = Prism.highlight(
-      output,
+      beautiful,
       prismLanguage,
       this.editor?.language || 'html'
     );

@@ -21,7 +21,7 @@ body
 .content_grid
   display: grid
   flex-grow: 1
-  grid-template-columns: 1fr 1fr
+  grid-template-columns: 50% 50%
   column-gap: $pad
 
 .content_grid__section
@@ -32,6 +32,9 @@ body
   padding: 0 $pad
 
 .editor__demo
+  height: 25vh
+  min-height: 10em
+
   .ProseMirror
     &[contenteditable="true"]
       height: 25vh
@@ -39,7 +42,7 @@ body
 
 .editor__output
   pre
-    height: 15vh
+    height: 20vh
     min-height: 10em
     overflow: auto
 
