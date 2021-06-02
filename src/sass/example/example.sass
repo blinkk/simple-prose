@@ -32,8 +32,10 @@ body
   padding: 0 $pad
 
 .editor__demo
-  height: 25vh
-  min-height: 10em
+  .ProseMirror
+    &[contenteditable="true"]
+      height: 25vh
+      min-height: 10em
 
 .editor__output
   pre
@@ -51,3 +53,5 @@ pre
 
 code
   font-family: $font-family-mono
+
+@import '../main'

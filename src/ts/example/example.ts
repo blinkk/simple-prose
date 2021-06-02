@@ -1,5 +1,5 @@
-import * as HtmlExtensions from '../editor/html';
-import * as MarkdownExtensions from '../editor/markdown';
+import * as HtmlExtensions from '../extensions/html';
+import * as MarkdownExtensions from '../extensions/markdown';
 
 import {
   EditorComponent,
@@ -7,10 +7,10 @@ import {
   EditorOptions,
 } from '../editor/editor';
 
+import {ExtensionComponent} from '../extensions/extension';
 import {HtmlEditor} from '../editor/htmlEditor';
 import {MarkdownEditor} from '../editor/markdownEditor';
 import Prism from 'prismjs';
-import {ExtensionComponent} from '../editor/extension';
 
 const EDITORS: Array<EditorConstructor> = [HtmlEditor, MarkdownEditor];
 

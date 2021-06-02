@@ -56,6 +56,13 @@
   "devDependencies": {
     "@types/node": "^15.6.0",
     "@types/prismjs": "^1.16.5",
+    "@types/prosemirror-commands": "^1.0.4",
+    "@types/prosemirror-history": "^1.0.2",
+    "@types/prosemirror-keymap": "^1.0.4",
+    "@types/prosemirror-model": "^1.13.0",
+    "@types/prosemirror-schema-basic": "^1.0.2",
+    "@types/prosemirror-state": "^1.2.6",
+    "@types/prosemirror-view": "^1.17.1",
     "@typescript-eslint/eslint-plugin": "^4.24.0",
     "ava": "^3.14.0",
     "codecov": "^3.8.2",
@@ -81,6 +88,13 @@
   },
   "dependencies": {
     "esbuild": "^0.12.5",
+    "prosemirror-commands": "^1.1.8",
+    "prosemirror-history": "^1.1.3",
+    "prosemirror-keymap": "^1.1.4",
+    "prosemirror-model": "^1.14.1",
+    "prosemirror-schema-basic": "^1.1.2",
+    "prosemirror-state": "^1.3.4",
+    "prosemirror-view": "^1.18.7",
     "sass": "^1.34.0"
   }
 }
