@@ -1,8 +1,7 @@
 import {DOMOutputSpec, MarkSpec, Schema} from 'prosemirror-model';
 import {ExtensionTypes, MarkExtensionComponent} from '../extension';
-import {Keymap, toggleMark} from 'prosemirror-commands';
 
-import {markInputRule} from '../utils';
+import {toggleMark} from 'prosemirror-commands';
 
 /**
  * Html bold extension.
@@ -38,10 +37,6 @@ export class StrongExtension implements MarkExtensionComponent {
         return ['strong', 0];
       },
     };
-  }
-
-  get inputRules() {
-    return [markInputRule(/\*\*([^\s](?:.*[^\s])?)\*\*(.)$/, this.markType)];
   }
 
   get markType() {

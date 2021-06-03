@@ -12,6 +12,7 @@ import {
   MarkExtensionComponent,
   NodeExtensionComponent,
 } from '../extensions/extension';
+import {InputRule, inputRules as makeInputRules} from 'prosemirror-inputrules';
 import {history, redo, undo} from 'prosemirror-history';
 
 import {EditorView} from 'prosemirror-view';
@@ -62,13 +63,19 @@ export class HtmlEditor implements EditorComponent {
 
   get plugins(): Array<Plugin> {
     const plugins: Array<Plugin> = [];
+    let inputRules: Array<InputRule> = [];
 
     for (const ext of this.options?.extensions || []) {
+      inputRules = [...inputRules, ...(ext.inputRules || [])];
+
       const extKeymap = ext.keymap;
       if (extKeymap) {
         plugins.push(keymap(extKeymap));
       }
     }
+
+    // Combine all input rules as single plugin.
+    plugins.push(makeInputRules({rules: inputRules}));
 
     return plugins;
   }
