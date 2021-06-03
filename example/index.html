@@ -4,24 +4,49 @@
     <meta charset="utf-8">
     <title>Simple Prose Example</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="example.min.css">
+    <link rel="stylesheet" href="prism.css">
   </head>
   <body>
     <div class="container">
+      <div class="content">
+        <h1>Simple Prose</h1>
+        <p>Simple content editor based off <a href="https://prosemirror.net/">ProseMirror</a> with a simple extension system for defining functionality.</p>
+      </div>
       <div class="content_grid">
-        <div class="content_grid__section" data-type="html">
+        <div
+            class="content_grid__section"
+            data-type-class="HtmlEditor"
+            data-type-extensions="HtmlExtensions"
+            data-type-options='{}'>
           <h2>Html Editor</h2>
-          <div id="editor-html"></div>
-          <div class="editor__config"><pre><code></code></pre></div>
+          <div id="editor-html" class="editor__demo"></div>
+          <h3>Value</h3>
+          <div class="editor__output"><pre><code>Loading output...</code></pre></div>
+          <h3>Example</h3>
+          <div class="editor__example"><pre><code>Loading example...</code></pre></div>
         </div>
 
-        <div class="content_grid__section" data-type="markdown">
+        <div
+            class="content_grid__section"
+            data-type-class="MarkdownEditor"
+            data-type-extensions="MarkdownExtensions"
+            data-type-options='{}'>
           <h2>Markdown Editor</h2>
-          <div id="editor-markdown"></div>
-          <div class="editor__config"><pre><code></code></pre></div>
+          <div id="editor-markdown" class="editor__demo"></div>
+          <h3>Value</h3>
+          <div class="editor__output"><pre><code>Loading output...</code></pre></div>
+          <h3>Example</h3>
+          <div class="editor__example"><pre><code>Loading example...</code></pre></div>
         </div>
+      </div>
+
+      <div class="content">
+        <h2>Installation</h2>
+        <pre><code>npm install @blinkk/simple-prose</code></pre>
       </div>
     </div>
 

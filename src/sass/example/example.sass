@@ -2,7 +2,8 @@
 
 body
   background-color: $color-back
-  font-family: 'Roboto', sans-serif
+  font-family: $font-family
+  font-size: $font-size
   margin: 0
   padding: 0
 
@@ -11,29 +12,53 @@ body
 
 .container
   display: flex
-  flex-flow: row
+  flex-flow: column
   min-height: 100vh
 
+.content
+  padding: 0 $pad
+
 .content_grid
-  display: grid
+  justify-content: flex-start
+  display: flex
+  flex-flow: row
   flex-grow: 1
-  grid-template-columns: 1fr 1fr
-  column-gap: $pad
 
 .content_grid__section
   align-items: stretch
   display: flex
+  flex-basis: 50%
   flex-flow: column
-  flex-grow: 1
-  padding: $pad
+  flex-grow: 0
+  flex-shrink: 0
+  max-width: 50%
+  padding: 0 $pad
 
-.editor__config
+.editor__demo
+  height: 25vh
+  min-height: 10em
+
+  .ProseMirror
+    &[contenteditable="true"]
+      height: 25vh
+      min-height: 10em
+
+.editor__output
   pre
-    background: $color-secondary-light
-    color: $color-on-secondary-light
-    border: $border-size solid $color-dark-border
-    padding: $pad
+    height: 20vh
+    min-height: 10em
     overflow: auto
 
-  code
-    font-family: $font-family-mono
+pre
+  background: $color-secondary-light
+  color: $color-on-secondary-light
+  border: $border-size solid $color-dark-border
+  font-size: $font-size-small
+  margin: 0
+  padding: $pad
+  overflow: auto
+
+code
+  font-family: $font-family-mono
+
+@import '../main'
