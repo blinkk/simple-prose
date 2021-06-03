@@ -1,6 +1,7 @@
-import {BoldExtension} from './boldExtension';
+import {ExtensionConstructor} from '../extension';
+import {StrongExtension} from './strongExtension';
 
-export const ALL = [BoldExtension];
+export const ALL: Array<ExtensionConstructor> = [StrongExtension];
 
 // Export individual built-in extensions.
-export {BoldExtension};
+export {StrongExtension};
