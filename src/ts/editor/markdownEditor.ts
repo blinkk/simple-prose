@@ -1,61 +1,73 @@
-// import {EditorComponent, EditorOptions, EditorUpdateHandler} from './editor';
-// import {history, redo, undo} from 'prosemirror-history';
-// import {EditorState} from 'prosemirror-state';
-// import {EditorView} from 'prosemirror-view';
-// import {Listeners} from '../utility/listeners';
-// import {baseKeymap} from 'prosemirror-commands';
-// import {keymap} from 'prosemirror-keymap';
-// import {schema} from 'prosemirror-schema-basic';
+import {
+  EditorComponent,
+  EditorOptions,
+  EditorUpdateHandler,
+  createPluginsFromExtensions,
+  createSchemaFromExtensions,
+  defaultPlugins,
+} from './editor';
 
-// export class MarkdownEditor implements EditorComponent {
-//   container: HTMLElement;
-//   options?: EditorOptions;
-//   view: EditorView;
-//   listeners: Listeners;
+import {DOMSerializer} from 'prosemirror-model';
+import {EditorState} from 'prosemirror-state';
+import {EditorView} from 'prosemirror-view';
+import {Listeners} from '../utility/listeners';
 
-//   constructor(container: HTMLElement, options?: EditorOptions) {
-//     this.container = container;
-//     this.options = options;
-//     this.listeners = new Listeners();
+export class MarkdownEditor implements EditorComponent {
+  container: HTMLElement;
+  options?: EditorOptions;
+  view: EditorView;
+  listeners: Listeners;
 
-//     const state = EditorState.create({
-//       schema,
-//       plugins: [
-//         history(),
-//         keymap({'Mod-z': undo, 'Mod-y': redo}),
-//         keymap(baseKeymap),
-//       ],
-//     });
-//     this.view = new EditorView(this.container, {
-//       state,
-//       dispatchTransaction: transaction => {
-//         const newState = this.view.state.apply(transaction);
-//         this.view.updateState(newState);
+  constructor(container: HTMLElement, options?: EditorOptions) {
+    this.container = container;
+    this.options = options;
+    this.listeners = new Listeners();
 
-//         console.log('document updated!');
-//         console.log(
-//           'Document size went from',
-//           transaction.before.content.size,
-//           'to',
-//           transaction.doc.content.size
-//         );
-//         this.listeners.trigger('update', this);
-//       },
-//     });
-//   }
+    const schema = createSchemaFromExtensions(this.options?.extensions || []);
+    const state = EditorState.create({
+      schema,
+      plugins: [
+        // Default editor plugins.
+        ...defaultPlugins,
 
-//   get language(): string {
-//     return 'markdown';
-//   }
+        // Allow plugins directly in the editor options.
+        ...(this.options?.plugins || []),
 
-//   get value(): string {
-//     return this.view.state.doc.toString();
-//   }
+        // Generate plugins from the extensions.
+        ...createPluginsFromExtensions(this.options?.extensions || []),
+      ],
+    });
+    this.view = new EditorView(this.container, {
+      state,
+      dispatchTransaction: transaction => {
+        const newState = this.view.state.apply(transaction);
+        this.view.updateState(newState);
+        this.listeners.trigger('update', this);
+      },
+    });
+  }
 
-//   onUpdate(handler: EditorUpdateHandler): EditorComponent {
-//     this.listeners.add('update', handler);
+  get language(): string {
+    return 'markdown';
+  }
 
-//     // Allow chaining when creating the editor.
-//     return this;
-//   }
-// }
+  get value(): string {
+    // TODO: Get the markdown value.
+    const div = document.createElement('div');
+
+    div.appendChild(
+      DOMSerializer.fromSchema(this.view.state.schema).serializeFragment(
+        this.view.state.doc.content
+      )
+    );
+
+    return div.innerHTML;
+  }
+
+  onUpdate(handler: EditorUpdateHandler): EditorComponent {
+    this.listeners.add('update', handler);
+
+    // Allow chaining when creating the editor.
+    return this;
+  }
+}

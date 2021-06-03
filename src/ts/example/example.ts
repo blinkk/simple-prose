@@ -1,20 +1,13 @@
 import * as HtmlExtensions from '../extensions/html';
-// import * as MarkdownExtensions from '../extensions/markdown';
+import * as MarkdownExtensions from '../extensions/markdown';
 
-import {
-  EditorComponent,
-  EditorConstructor,
-  EditorOptions,
-} from '../editor/editor';
+import {EditorComponent, EditorOptions} from '../editor/editor';
 
 import {ExtensionConstructor} from '../extensions/extension';
 import {HtmlEditor} from '../editor/htmlEditor';
-// import {MarkdownEditor} from '../editor/markdownEditor';
+import {MarkdownEditor} from '../editor/markdownEditor';
 import Prism from 'prismjs';
 import {html} from 'js-beautify';
-
-// const EDITORS: Array<EditorConstructor> = [HtmlEditor, MarkdownEditor];
-const EDITORS: Array<EditorConstructor> = [HtmlEditor];
 
 /**
  * Understands the structure of the editor page and crafts the example experience
@@ -111,10 +104,27 @@ class HtmlExampleEditor extends ExampleEditor {
   }
 }
 
+class MarkdownExampleEditor extends ExampleEditor {
+  createEditor() {
+    this.editor = new MarkdownEditor(this.demo, {
+      extensions: [new MarkdownExtensions.StrongExtension()],
+    }).onUpdate(() => {
+      this.showOutput();
+    });
+  }
+
+  get extensions(): Array<ExtensionConstructor> {
+    return MarkdownExtensions.ALL;
+  }
+}
+
 for (const container of document.querySelectorAll(
   '.content_grid__section[data-type-class]'
 )) {
-  if ((container as HTMLElement).dataset.typeClass === 'HtmlEditor') {
+  const typeClass = (container as HTMLElement).dataset.typeClass;
+  if (typeClass === 'HtmlEditor') {
     new HtmlExampleEditor(container as HTMLElement);
+  } else if (typeClass === 'MarkdownEditor') {
+    new MarkdownExampleEditor(container as HTMLElement);
   }
 }

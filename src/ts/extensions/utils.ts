@@ -30,35 +30,42 @@ export function markApplies(
   return false;
 }
 
-export function markInputRule(
-  pattern: RegExp,
-  markType: MarkType,
-  getAttrs?: (match: string[]) => any
-): InputRule {
-  return new InputRule(pattern, (state, match, start, end) => {
-    console.log(match, start, end);
-    // only apply marks to non-empty text selections
+export interface MarkInputRuleOptions {
+  pattern: RegExp;
+  markType: MarkType;
+  getAttrs?: (match: string[]) => any;
+}
+
+export function markInputRule(options: MarkInputRuleOptions): InputRule {
+  return new InputRule(options.pattern, (state, match, start, end) => {
+    // Only apply marks to non-empty text selections.
     if (!(state.selection instanceof TextSelection)) {
       return null;
     }
 
-    // determine if mark applies to match
+    // Determine if mark applies to match.
     const $start = state.doc.resolve(start);
     const $end = state.doc.resolve(end);
     const range = [new SelectionRange($start, $end)];
-    if (!markApplies(state.doc, range, markType)) {
+    if (!markApplies(state.doc, range, options.markType)) {
       return null;
     }
 
-    // apply mark
-    const tr = state.tr.replaceWith(start, end, markType.schema.text(match[1]));
+    const tr = state.tr.replaceWith(
+      start,
+      end,
+      options.markType.schema.text(match[1])
+    );
+
     return tr
       .addMark(
         tr.mapping.map(start),
         tr.mapping.map(end),
-        markType.create(getAttrs ? getAttrs(match) : null)
+        options.markType.create(
+          options.getAttrs ? options.getAttrs(match) : null
+        )
       )
-      .removeStoredMark(markType)
+      .removeStoredMark(options.markType)
       .insertText(match[2]);
   });
 }
