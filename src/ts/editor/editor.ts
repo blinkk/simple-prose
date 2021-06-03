@@ -1,7 +1,8 @@
 import {MarkSpec, NodeSpec} from 'prosemirror-model';
+import {Plugin, Transaction} from 'prosemirror-state';
+
 import {EditorView} from 'prosemirror-view';
 import {ExtensionComponent} from '../extensions/extension';
-import {Transaction} from 'prosemirror-state';
 
 export type EditorUpdateHandler = (
   editor: EditorComponent,
@@ -12,7 +13,8 @@ export type SchemaMarkTypes = {[x: string]: MarkSpec};
 export type SchemaNodeTypes = {[x: string]: NodeSpec};
 
 export interface EditorOptions {
-  extensions: Array<ExtensionComponent>;
+  extensions?: Array<ExtensionComponent>;
+  plugins?: Array<Plugin>;
 }
 
 export interface EditorComponent {

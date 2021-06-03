@@ -34,9 +34,15 @@ export class HtmlEditor implements EditorComponent {
     const state = EditorState.create({
       schema,
       plugins: [
+        // Basic 'standard' editor plugins.
         history(),
-        keymap({'Mod-z': undo, 'Mod-y': redo}),
         keymap(baseKeymap),
+        keymap({'Mod-z': undo, 'Mod-y': redo}),
+
+        // Allow plugins directly in the editor options.
+        ...(this.options?.plugins || []),
+
+        // Generate plugins from the extensions.
         ...this.plugins,
       ],
     });
