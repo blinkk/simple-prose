@@ -21,7 +21,7 @@ export interface ExtensionOptions {}
 export interface ExtensionComponent {
   inputRules?: Array<InputRule>;
   keymap?: Keymap;
-  menu?: MenuOptions;
+  menu?: Array<MenuOptions>;
   name: string;
   schema?: Schema;
   types: Array<ExtensionTypes>;

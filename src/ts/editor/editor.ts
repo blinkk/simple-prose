@@ -61,20 +61,16 @@ export function createPluginsFromExtensions(
   extensions: Array<ExtensionComponent>
 ): Array<Plugin> {
   const plugins: Array<Plugin> = [];
-  const menuItemOptions: Array<MenuOptions> = [];
   let extInputRules: Array<InputRule> = [];
+  let menuItemOptions: Array<MenuOptions> = [];
 
   for (const ext of extensions) {
     extInputRules = [...extInputRules, ...(ext.inputRules || [])];
+    menuItemOptions = [...menuItemOptions, ...(ext.menu || [])];
 
     const extKeymap = ext.keymap;
     if (extKeymap) {
       plugins.push(keymap(extKeymap));
-    }
-
-    const extMenu = ext.menu;
-    if (extMenu) {
-      menuItemOptions.push(extMenu);
     }
   }
 
