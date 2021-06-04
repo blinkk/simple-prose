@@ -3,7 +3,10 @@ import * as MarkdownExtensions from '../extensions/markdown';
 
 import {EditorComponent, EditorOptions} from '../editor/editor';
 
-import {ExtensionConstructor} from '../extensions/extension';
+import {
+  ExtensionComponent,
+  ExtensionConstructor,
+} from '../extensions/extension';
 import {HtmlEditor} from '../editor/htmlEditor';
 import {MarkdownEditor} from '../editor/markdownEditor';
 import Prism from 'prismjs';
@@ -54,22 +57,40 @@ class ExampleEditor {
     // Unimplemented in base example.
   }
 
-  get extensions(): Array<ExtensionConstructor> {
+  get extensions(): Array<ExtensionComponent> {
     return [];
   }
 
   showExample() {
+    const extensions = this.extensions;
+    const extensionClasses: Array<string> = [];
+
+    for (const extension of extensions) {
+      // TODO: Determine how to pass options.
+      extensionClasses.push(
+        `new ${this.typeExtensions}.${extension.constructor.name}()`
+      );
+    }
+
+    const optionsStub = Object.assign({}, this.options, {
+      extensions: '{{stub}}',
+    });
+
+    const optionsExample = JSON.stringify(optionsStub, undefined, 2).replace(
+      '"{{stub}}"',
+      'extensions'
+    );
+
     const exampleCode = `import { ${this.typeClass}, ${
       this.typeExtensions
     } } from "@blinkk/simple-prose";
 
+const extensions = [
+  ${extensionClasses.join(',\r  ')},
+];
 const editor = new ${
       this.typeClass
-    }(document.querySelector('.editor'), ${JSON.stringify(
-      this.options,
-      undefined,
-      2
-    )})`;
+    }(document.querySelector('.editor'), ${optionsExample})`;
     this.example.innerHTML = Prism.highlight(
       exampleCode,
       Prism.languages.javascript,
@@ -92,29 +113,45 @@ const editor = new ${
 
 class HtmlExampleEditor extends ExampleEditor {
   createEditor() {
-    this.editor = new HtmlEditor(this.demo, {
-      extensions: [new HtmlExtensions.StrongExtension()],
-    }).onUpdate(() => {
+    this.editor = new HtmlEditor(
+      this.demo,
+      Object.assign({}, this.options, {
+        extensions: this.extensions,
+      })
+    ).onUpdate(() => {
       this.showOutput();
     });
   }
 
-  get extensions(): Array<ExtensionConstructor> {
-    return HtmlExtensions.ALL;
+  get extensions(): Array<ExtensionComponent> {
+    const extensions: Array<ExtensionComponent> = [];
+    for (const extConstructor of HtmlExtensions.ALL) {
+      // TODO: Determine how to send options for extensions.
+      extensions.push(new extConstructor({}));
+    }
+    return extensions;
   }
 }
 
 class MarkdownExampleEditor extends ExampleEditor {
   createEditor() {
-    this.editor = new MarkdownEditor(this.demo, {
-      extensions: [new MarkdownExtensions.StrongExtension()],
-    }).onUpdate(() => {
+    this.editor = new MarkdownEditor(
+      this.demo,
+      Object.assign({}, this.options, {
+        extensions: this.extensions,
+      })
+    ).onUpdate(() => {
       this.showOutput();
     });
   }
 
-  get extensions(): Array<ExtensionConstructor> {
-    return MarkdownExtensions.ALL;
+  get extensions(): Array<ExtensionComponent> {
+    const extensions: Array<ExtensionComponent> = [];
+    for (const extConstructor of MarkdownExtensions.ALL) {
+      // TODO: Determine how to send options for extensions.
+      extensions.push(new extConstructor({}));
+    }
+    return extensions;
   }
 }
 
