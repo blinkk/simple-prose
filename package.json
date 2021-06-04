@@ -34,7 +34,7 @@
     "compile": "tsc && npx gulp build && webpack --config webpack.prod.js",
     "coverage": "codecov",
     "dev": "concurrently \"npx ava --watch\" \"tsc --watch\"",
-    "docs": "typedoc",
+    "docs": "typedoc && touch docs/.nojekyll",
     "fix": "node ./node_modules/eslint/bin/eslint --fix src/**/*.ts",
     "prepare": "yarn run compile",
     "prepublish": "tsc",
