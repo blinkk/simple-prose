@@ -20,6 +20,7 @@ export class MarkdownEditor implements EditorComponent {
 
   constructor(container: HTMLElement, options?: EditorOptions) {
     this.container = container;
+    this.container.classList.add('sp');
     this.options = options;
     this.listeners = new Listeners();
 

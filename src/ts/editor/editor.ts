@@ -5,6 +5,7 @@ import {
 } from '../extensions/extension';
 import {InputRule, inputRules} from 'prosemirror-inputrules';
 import {MarkSpec, NodeSpec, Schema} from 'prosemirror-model';
+import {MenuOptions, menuPlugin} from './menu';
 import {Plugin, Transaction} from 'prosemirror-state';
 import {history, redo, undo} from 'prosemirror-history';
 
@@ -12,7 +13,6 @@ import {EditorView} from 'prosemirror-view';
 import {ExtensionComponent} from '../extensions/extension';
 import {baseKeymap} from 'prosemirror-commands';
 import {keymap} from 'prosemirror-keymap';
-import {MenuOptions, menuPlugin} from './menu';
 
 export type EditorUpdateHandler = (
   editor: EditorComponent,

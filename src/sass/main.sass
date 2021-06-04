@@ -1,3 +1,28 @@
+// Simple Prose styling.
+.sp
+  border: var(--sp-border-size, 1px) var(--sp-border-style, solid) var(--sp-border-color, #333)
+  border-radius: var(--sp-border-radius, 3px)
+
+.sp__menu__bar
+  align-items: center
+  display: flex
+  flex-flow: row
+  font-size: var(--sp-menu-font-size, 16px)
+  line-height: 1
+  padding: var(--sp-menu-padding, .25em .5em)
+
+.sp__menu__item
+  cursor: pointer
+  align-items: center
+  border: var(--sp-icon-border-size, 1px) var(--sp-icon-border-style, solid) var(--sp-icon-border-color, transparent)
+  border-radius: var(--sp-icon-border-radius, 3px)
+  display: flex
+  flex-flow: row
+
+  &:hover
+    border-color: var(--sp-icon-border-color-hover, #555)
+
+// ProseMirror Styling.
 .ProseMirror
   position: relative
   word-wrap: break-word
@@ -40,20 +65,3 @@ li.ProseMirror-selectednode
     bottom: -2px
     border: 2px solid #8cf
     pointer-events: none
-
-.sp__menu__bar
-  align-items: center
-  display: flex
-  flex-flow: row
-  font-size: var(--sp-menu-font-size, 16px)
-  line-height: 1
-  padding: var(--sp-menu-padding, .25em .5em)
-
-.sp__menu__item
-  cursor: pointer
-  align-items: center
-  display: flex
-  flex-flow: row
-
-  &:hover
-    outline: var(--sp-icon-border-size, 1px) solid var(--sp-icon-border-color, #555)
