@@ -50,7 +50,13 @@
 
   &[contenteditable="true"]
     max-width: 100%
-    padding: var(--sp-editor-padding, .5em)
+    padding: var(--sp-editor-padding, 1em)
+
+    p
+      &:first-child
+        margin-top: 0
+      &:last-child
+        margin-bottom: 0
 
 // Make sure li selections wrap around markers.
 li.ProseMirror-selectednode
