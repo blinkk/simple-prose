@@ -1,16 +1,17 @@
+import {DOMSerializer, MarkSpec, NodeSpec, Schema} from 'prosemirror-model';
+import {EditorState, Plugin, Transaction} from 'prosemirror-state';
 import {
   ExtensionTypes,
   MarkExtensionComponent,
   NodeExtensionComponent,
 } from '../extensions/extension';
 import {InputRule, inputRules} from 'prosemirror-inputrules';
-import {MarkSpec, NodeSpec, Schema} from 'prosemirror-model';
 import {MenuOptions, menuPlugin} from './menu';
-import {Plugin, Transaction} from 'prosemirror-state';
 import {history, redo, undo} from 'prosemirror-history';
 
 import {EditorView} from 'prosemirror-view';
 import {ExtensionComponent} from '../extensions/extension';
+import {Listeners} from '../utility/listeners';
 import {baseKeymap} from 'prosemirror-commands';
 import {keymap} from 'prosemirror-keymap';
 
@@ -287,4 +288,54 @@ export function createSchemaFromExtensions(
   }
 
   return schema;
+}
+
+export abstract class BaseEditor implements EditorComponent {
+  container: HTMLElement;
+  options?: EditorOptions;
+  view: EditorView;
+  listeners: Listeners;
+
+  constructor(container: HTMLElement, options?: EditorOptions) {
+    this.container = container;
+    this.container.classList.add('sp');
+    this.options = options;
+    this.listeners = new Listeners();
+
+    const schema = createSchemaFromExtensions(this.options?.extensions || []);
+    const state = EditorState.create({
+      schema,
+      plugins: [
+        // Default editor plugins.
+        ...defaultPlugins,
+
+        // Allow plugins directly in the editor options.
+        ...(this.options?.plugins || []),
+
+        // Generate plugins from the extensions.
+        ...createPluginsFromExtensions(this.options?.extensions || []),
+      ],
+    });
+
+    // Add event for when value is updated.
+    this.view = new EditorView(this.container, {
+      state,
+      dispatchTransaction: transaction => {
+        const newState = this.view.state.apply(transaction);
+        this.view.updateState(newState);
+        this.listeners.trigger('update', this);
+      },
+    });
+  }
+
+  abstract get language(): string;
+
+  abstract get value(): string;
+
+  onUpdate(handler: EditorUpdateHandler): EditorComponent {
+    this.listeners.add('update', handler);
+
+    // Allow chaining when creating the editor.
+    return this;
+  }
 }
