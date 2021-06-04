@@ -1,5 +1,8 @@
 @import "../config"
 
+*
+  box-sizing: border-box
+
 body
   background-color: $color-back
   font-family: $font-family
@@ -7,8 +10,6 @@ body
   margin: 0
   padding: 0
 
-  *
-    box-sizing: border-box
 
 .container
   display: flex
@@ -38,13 +39,16 @@ body
   padding: 0 $pad
 
 .editor__demo
-  height: 25vh
   min-height: 10em
+  border: $border-size solid $color-dark-border
+  border-radius: $radius-3
 
   .ProseMirror
     &[contenteditable="true"]
-      height: 25vh
       min-height: 10em
+
+  .sp__menu__bar
+    border-bottom: $border-size solid $color-dark-border
 
 .editor__output
   pre

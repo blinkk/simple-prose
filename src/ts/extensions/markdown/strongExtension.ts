@@ -19,6 +19,16 @@ export class StrongExtension implements MarkExtensionComponent {
     ];
   }
 
+  get menu() {
+    return {
+      command: toggleMark(this.markType),
+      icon: {
+        icon: 'format_bold',
+      },
+      label: this.name,
+    };
+  }
+
   get name() {
     return 'Strong';
   }

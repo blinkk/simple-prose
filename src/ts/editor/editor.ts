@@ -12,6 +12,7 @@ import {EditorView} from 'prosemirror-view';
 import {ExtensionComponent} from '../extensions/extension';
 import {baseKeymap} from 'prosemirror-commands';
 import {keymap} from 'prosemirror-keymap';
+import {MenuOptions, menuPlugin} from './menu';
 
 export type EditorUpdateHandler = (
   editor: EditorComponent,
@@ -60,6 +61,7 @@ export function createPluginsFromExtensions(
   extensions: Array<ExtensionComponent>
 ): Array<Plugin> {
   const plugins: Array<Plugin> = [];
+  const menuItemOptions: Array<MenuOptions> = [];
   let extInputRules: Array<InputRule> = [];
 
   for (const ext of extensions) {
@@ -69,6 +71,16 @@ export function createPluginsFromExtensions(
     if (extKeymap) {
       plugins.push(keymap(extKeymap));
     }
+
+    const extMenu = ext.menu;
+    if (extMenu) {
+      menuItemOptions.push(extMenu);
+    }
+  }
+
+  // Create the menu plugin from any menu options in the extensions.
+  if (menuItemOptions.length) {
+    plugins.push(menuPlugin(menuItemOptions));
   }
 
   // Combine all input rules as single plugin.

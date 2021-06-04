@@ -7,6 +7,7 @@ import {
 } from 'prosemirror-model';
 import {InputRule} from 'prosemirror-inputrules';
 import {Keymap} from 'prosemirror-commands';
+import {MenuOptions} from '../editor/menu';
 import {NodeView} from 'prosemirror-view';
 
 export enum ExtensionTypes {
@@ -20,6 +21,7 @@ export interface ExtensionOptions {}
 export interface ExtensionComponent {
   inputRules?: Array<InputRule>;
   keymap?: Keymap;
+  menu?: MenuOptions;
   name: string;
   schema?: Schema;
   types: Array<ExtensionTypes>;
