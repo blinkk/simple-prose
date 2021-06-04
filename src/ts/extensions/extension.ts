@@ -9,6 +9,7 @@ import {InputRule} from 'prosemirror-inputrules';
 import {Keymap} from 'prosemirror-commands';
 import {MenuOptions} from '../editor/menu';
 import {NodeView} from 'prosemirror-view';
+import {Plugin} from 'prosemirror-state';
 
 export enum ExtensionTypes {
   Mark = 'Mark',
@@ -23,6 +24,7 @@ export interface ExtensionComponent {
   keymap?: Keymap;
   menu?: Array<MenuOptions>;
   name: string;
+  plugins?: Array<Plugin>;
   schema?: Schema;
   types: Array<ExtensionTypes>;
 }

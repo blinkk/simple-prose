@@ -53,42 +53,6 @@ export const defaultPlugins: Array<Plugin> = [
 /**
  * Editor extensions make a 'one-stop' place to create functionality for
  * editor, but the editor needs to convert the extension into ProseMirror
- * plugins for specific functionality.
- *
- * @param extensions Editor extensions to create the plugins from.
- * @returns Plugins created from the editor extensions.
- */
-export function createPluginsFromExtensions(
-  extensions: Array<ExtensionComponent>
-): Array<Plugin> {
-  const plugins: Array<Plugin> = [];
-  let extInputRules: Array<InputRule> = [];
-  let menuItemOptions: Array<MenuOptions> = [];
-
-  for (const ext of extensions) {
-    extInputRules = [...extInputRules, ...(ext.inputRules || [])];
-    menuItemOptions = [...menuItemOptions, ...(ext.menu || [])];
-
-    const extKeymap = ext.keymap;
-    if (extKeymap) {
-      plugins.push(keymap(extKeymap));
-    }
-  }
-
-  // Create the menu plugin from any menu options in the extensions.
-  if (menuItemOptions.length) {
-    plugins.push(menuPlugin(menuItemOptions));
-  }
-
-  // Combine all input rules as single plugin.
-  plugins.push(inputRules({rules: extInputRules}));
-
-  return plugins;
-}
-
-/**
- * Editor extensions make a 'one-stop' place to create functionality for
- * editor, but the editor needs to convert the extension into ProseMirror
  * schema for specific functionality.
  *
  * @param extensions Editor extensions to create the plugins from.
@@ -313,7 +277,7 @@ export abstract class BaseEditor implements EditorComponent {
         ...(this.options?.plugins || []),
 
         // Generate plugins from the extensions.
-        ...createPluginsFromExtensions(this.options?.extensions || []),
+        ...this.createPluginsFromExtensions(this.options?.extensions || []),
       ],
     });
 
@@ -326,6 +290,43 @@ export abstract class BaseEditor implements EditorComponent {
         this.listeners.trigger('update', this);
       },
     });
+  }
+
+  /**
+   * Editor extensions make a 'one-stop' place to create functionality for
+   * editor, but the editor needs to convert the extension into ProseMirror
+   * plugins for specific functionality.
+   *
+   * @param extensions Editor extensions to create the plugins from.
+   * @returns Plugins created from the editor extensions.
+   */
+  protected createPluginsFromExtensions(
+    extensions: Array<ExtensionComponent>
+  ): Array<Plugin> {
+    let plugins: Array<Plugin> = [];
+    let extInputRules: Array<InputRule> = [];
+    let menuItemOptions: Array<MenuOptions> = [];
+
+    for (const ext of extensions) {
+      plugins = [...plugins, ...(ext.plugins || [])];
+      extInputRules = [...extInputRules, ...(ext.inputRules || [])];
+      menuItemOptions = [...menuItemOptions, ...(ext.menu || [])];
+
+      const extKeymap = ext.keymap;
+      if (extKeymap) {
+        plugins.push(keymap(extKeymap));
+      }
+    }
+
+    // Create the menu plugin from any menu options in the extensions.
+    if (menuItemOptions.length) {
+      plugins.push(menuPlugin(menuItemOptions));
+    }
+
+    // Combine all input rules as single plugin.
+    plugins.push(inputRules({rules: extInputRules}));
+
+    return plugins;
   }
 
   abstract get language(): string;
