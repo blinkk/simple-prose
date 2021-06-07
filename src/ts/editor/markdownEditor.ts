@@ -6,12 +6,11 @@ import {
   createSchemaFromExtensions,
   defaultPlugins,
 } from './editor';
+import {MarkdownParser, defaultMarkdownSerializer} from 'prosemirror-markdown';
 
-import {DOMSerializer} from 'prosemirror-model';
 import {EditorState} from 'prosemirror-state';
 import {EditorView} from 'prosemirror-view';
 import {Listeners} from '../utility/listeners';
-import {MarkdownParser, defaultMarkdownSerializer} from 'prosemirror-markdown';
 import Token from 'markdown-it/lib/token';
 import markdownit from 'markdown-it';
 
@@ -76,17 +75,18 @@ export class MarkdownEditor implements EditorComponent {
   constructor(container: HTMLElement, options?: EditorOptions) {
     this.container = container;
     this.container.classList.add('sp');
+    this.container.classList.add('sp--markdown');
     this.options = options;
     this.listeners = new Listeners();
 
     const schema = createSchemaFromExtensions(this.options?.extensions || []);
-    console.log(schema.marks);
 
     this.parser = new MarkdownParser(
       schema,
       markdownit('commonmark', {html: false}),
       MarkdownItConfig
     );
+
     const state = EditorState.create({
       schema,
       plugins: [
@@ -115,8 +115,6 @@ export class MarkdownEditor implements EditorComponent {
   }
 
   get value(): string {
-    console.log(defaultMarkdownSerializer.serialize(this.view.state.doc));
-
     return defaultMarkdownSerializer.serialize(this.view.state.doc);
   }
 
