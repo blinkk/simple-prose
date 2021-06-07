@@ -8,14 +8,14 @@ const rename = require('gulp-rename');
 const sass = require('gulp-sass');
 sass.compiler = require('sass');
 
-ENTRIES = {
+const ENTRIES = {
   js: {
     src: ['./src/ts/example/example.ts'],
     out: './dist/example.min.js',
     watch: ['./src/ts/**/*.ts'],
   },
   sass: {
-    src: ['./src/sass/example/example.sass'],
+    src: ['./src/sass/example.sass'],
     out: './dist/example.min.css',
     watch: ['./src/sass/**/*.sass'],
   },
@@ -29,7 +29,9 @@ function logStats(outfiles) {
     const indent = ' '.repeat(4);
     const paddedSize = fileSize(outfile).padStart(8, ' ');
     const file = path.normalize(outfile);
-    console.log(`${indent}${colors.white(paddedSize)}  ${colors.bold.white(file)}`);
+    console.log(
+      `${indent}${colors.white(paddedSize)}  ${colors.bold.white(file)}`
+    );
   });
 }
 

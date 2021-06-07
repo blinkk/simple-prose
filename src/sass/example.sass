@@ -1,4 +1,4 @@
-@import "../config"
+@import "config"
 
 *
   box-sizing: border-box
@@ -44,12 +44,6 @@ body
     &[contenteditable="true"]
       min-height: 25vh
 
-      p
-        &:first-child
-          margin-top: 0
-        &:last-child
-          margin-bottom: 0
-
   .sp__menu__bar
     border-bottom: $border-size solid $color-dark-border
 
@@ -63,6 +57,7 @@ pre
   background: $color-secondary-light
   color: $color-on-secondary-light
   border: $border-size solid $color-dark-border
+  border-radius: $radius-3
   font-size: $font-size-small
   margin: 0
   padding: $pad
@@ -71,4 +66,4 @@ pre
 code
   font-family: $font-family-mono
 
-@import '../main'
+@import 'main'
