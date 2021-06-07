@@ -22,7 +22,7 @@ export class StrongExtension implements MarkExtensionComponent {
   }
 
   get name() {
-    return 'Strong';
+    return 'strong';
   }
 
   get types() {

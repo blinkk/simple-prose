@@ -99,21 +99,10 @@ export function createSchemaFromExtensions(
   defaultNodeSpecs?: SchemaNodeTypes
 ): Schema {
   // Default mark specs for the editor.
+  // Order matters.
   const markSpecs: SchemaMarkTypes =
     defaultMarkSpecs ||
     {
-      // code: {
-      //   parseDOM: [{tag: 'code'}],
-      //   toDOM() {
-      //     return ['code', 0];
-      //   },
-      // },
-      // em: {
-      //   parseDOM: [{tag: 'i'}, {tag: 'em'}, {style: 'font-style=italic'}],
-      //   toDOM() {
-      //     return ['em', 0];
-      //   },
-      // },
       // link: {
       //   attrs: {
       //     href: {},
@@ -136,71 +125,87 @@ export function createSchemaFromExtensions(
       //     return ['a', {href, title}, 0];
       //   },
       // },
+      // em: {
+      //   parseDOM: [{tag: 'i'}, {tag: 'em'}, {style: 'font-style=italic'}],
+      //   toDOM() {
+      //     return ['em', 0];
+      //   },
+      // },
+      // code: {
+      //   parseDOM: [{tag: 'code'}],
+      //   toDOM() {
+      //     return ['code', 0];
+      //   },
+      // },
     };
 
   // Default node specs for the editor.
+  // Order matters.
   const nodeSpecs: SchemaNodeTypes = defaultNodeSpecs || {
-    // blockquote: {
-    //   content: 'block+',
-    //   group: 'block',
-    //   defining: true,
-    //   parseDOM: [{tag: 'blockquote'}],
-    //   toDOM() {
-    //     return ['blockquote', 0];
-    //   },
-    // },
-
-    // code_block: {
-    //   content: 'text*',
-    //   marks: '',
-    //   group: 'block',
-    //   code: true,
-    //   defining: true,
-    //   parseDOM: [{tag: 'pre', preserveWhitespace: 'full'}],
-    //   toDOM() {
-    //     return ['pre', ['code', 0]];
-    //   },
-    // },
-
     doc: {
       content: 'block+',
     },
 
-    // hard_break: {
-    //   inline: true,
-    //   group: 'inline',
-    //   selectable: false,
-    //   parseDOM: [{tag: 'br'}],
-    //   toDOM() {
-    //     return ['br'];
-    //   },
-    // },
+    paragraph: {
+      content: 'inline*',
+      group: 'block',
+      parseDOM: [{tag: 'p'}],
+      toDOM() {
+        return ['p', 0];
+      },
+    },
 
-    // horizontal_rule: {
-    //   group: 'block',
-    //   parseDOM: [{tag: 'hr'}],
-    //   toDOM() {
-    //     return ['hr'];
-    //   },
-    // },
+    blockquote: {
+      content: 'block+',
+      group: 'block',
+      defining: true,
+      parseDOM: [{tag: 'blockquote'}],
+      toDOM() {
+        return ['blockquote', 0];
+      },
+    },
 
-    // heading: {
-    //   attrs: {level: {default: 1}},
-    //   content: 'inline*',
-    //   group: 'block',
-    //   defining: true,
-    //   parseDOM: [
-    //     {tag: 'h1', attrs: {level: 1}},
-    //     {tag: 'h2', attrs: {level: 2}},
-    //     {tag: 'h3', attrs: {level: 3}},
-    //     {tag: 'h4', attrs: {level: 4}},
-    //     {tag: 'h5', attrs: {level: 5}},
-    //     {tag: 'h6', attrs: {level: 6}},
-    //   ],
-    //   toDOM(node) {
-    //     return ['h' + node.attrs.level, 0];
-    //   },
-    // },
+    horizontal_rule: {
+      group: 'block',
+      parseDOM: [{tag: 'hr'}],
+      toDOM() {
+        return ['hr'];
+      },
+    },
+
+    heading: {
+      attrs: {level: {default: 1}},
+      content: 'inline*',
+      group: 'block',
+      defining: true,
+      parseDOM: [
+        {tag: 'h1', attrs: {level: 1}},
+        {tag: 'h2', attrs: {level: 2}},
+        {tag: 'h3', attrs: {level: 3}},
+        {tag: 'h4', attrs: {level: 4}},
+        {tag: 'h5', attrs: {level: 5}},
+        {tag: 'h6', attrs: {level: 6}},
+      ],
+      toDOM(node) {
+        return ['h' + node.attrs.level, 0];
+      },
+    },
+
+    code_block: {
+      content: 'text*',
+      marks: '',
+      group: 'block',
+      code: true,
+      defining: true,
+      parseDOM: [{tag: 'pre', preserveWhitespace: 'full'}],
+      toDOM() {
+        return ['pre', ['code', 0]];
+      },
+    },
+
+    text: {
+      group: 'inline',
+    },
 
     // image: {
     //   inline: true,
@@ -229,17 +234,14 @@ export function createSchemaFromExtensions(
     //   },
     // },
 
-    paragraph: {
-      content: 'inline*',
-      group: 'block',
-      parseDOM: [{tag: 'p'}],
-      toDOM() {
-        return ['p', 0];
-      },
-    },
-
-    text: {
+    hard_break: {
+      inline: true,
       group: 'inline',
+      selectable: false,
+      parseDOM: [{tag: 'br'}],
+      toDOM() {
+        return ['br'];
+      },
     },
   };
 
