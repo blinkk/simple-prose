@@ -21,6 +21,7 @@ export class HtmlEditor implements EditorComponent {
   constructor(container: HTMLElement, options?: EditorOptions) {
     this.container = container;
     this.container.classList.add('sp');
+    this.container.classList.add('sp--html');
     this.options = options;
     this.listeners = new Listeners();
 
