@@ -5,6 +5,7 @@ import {
 } from '../extensions/extension';
 import {InputRule, inputRules} from 'prosemirror-inputrules';
 import {MarkSpec, NodeSpec, Schema} from 'prosemirror-model';
+import {MenuOptions, menuPlugin} from './menu';
 import {Plugin, Transaction} from 'prosemirror-state';
 import {history, redo, undo} from 'prosemirror-history';
 
@@ -61,14 +62,21 @@ export function createPluginsFromExtensions(
 ): Array<Plugin> {
   const plugins: Array<Plugin> = [];
   let extInputRules: Array<InputRule> = [];
+  let menuItemOptions: Array<MenuOptions> = [];
 
   for (const ext of extensions) {
     extInputRules = [...extInputRules, ...(ext.inputRules || [])];
+    menuItemOptions = [...menuItemOptions, ...(ext.menu || [])];
 
     const extKeymap = ext.keymap;
     if (extKeymap) {
       plugins.push(keymap(extKeymap));
     }
+  }
+
+  // Create the menu plugin from any menu options in the extensions.
+  if (menuItemOptions.length) {
+    plugins.push(menuPlugin(menuItemOptions));
   }
 
   // Combine all input rules as single plugin.

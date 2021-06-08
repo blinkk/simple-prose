@@ -1,5 +1,73 @@
+// Simple Prose styling.
+.sp
+  border: var(--sp-border-size, 1px) var(--sp-border-style, solid) var(--sp-border-color, #333)
+  border-radius: var(--sp-border-radius, 3px)
+
+.sp__menu__bar
+  align-items: center
+  display: flex
+  flex-flow: row
+  font-size: var(--sp-menu-font-size, 16px)
+  line-height: 1
+  padding: var(--sp-menu-padding, .25em .5em)
+
+.sp__menu__item
+  cursor: pointer
+  align-items: center
+  border: var(--sp-icon-border-size, 1px) var(--sp-icon-border-style, solid) var(--sp-icon-border-color, transparent)
+  border-radius: var(--sp-icon-border-radius, 3px)
+  display: flex
+  flex-flow: row
+
+  &:hover
+    border-color: var(--sp-icon-border-color-hover, #555)
+
+// ProseMirror Styling.
 .ProseMirror
+  position: relative
+  word-wrap: break-word
+  white-space: pre-wrap
+  white-space: break-spaces
+  -webkit-font-variant-ligatures: none
+  font-variant-ligatures: none
+  // the above doesn't seem to work in Edge
+  font-feature-settings: "liga" 0
+
+  pre
+    white-space: pre-wrap
+
+  li
+    position: relative
+
+  &-hideselection
+    caret-color: transparent
+
+    *::selection
+      background: transparent
+
+  &-selectednode
+    outline: 2px solid #8cf
+
   &[contenteditable="true"]
-    border: $border-size solid $color-dark-border
     max-width: 100%
-    padding: $pad
+    padding: var(--sp-editor-padding, 1em)
+
+    p
+      &:first-child
+        margin-top: 0
+      &:last-child
+        margin-bottom: 0
+
+// Make sure li selections wrap around markers.
+li.ProseMirror-selectednode
+  outline: none
+
+  &:after
+    content: ""
+    position: absolute
+    left: -32px
+    right: -2px
+    top: -2px
+    bottom: -2px
+    border: 2px solid #8cf
+    pointer-events: none
