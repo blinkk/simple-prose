@@ -3,14 +3,14 @@ import * as MarkdownExtensions from '../extensions/markdown';
 
 import {EditorComponent, EditorOptions} from '../editor/editor';
 
-import {
-  ExtensionComponent,
-  ExtensionConstructor,
-} from '../extensions/extension';
+import {ExtensionComponent} from '../extensions/extension';
 import {HtmlEditor} from '../editor/htmlEditor';
 import {MarkdownEditor} from '../editor/markdownEditor';
 import Prism from 'prismjs';
 import {html} from 'js-beautify';
+
+// When minified, the class names change and cannot use the class.name.
+const ExtensionNames = ['StrongExtension'];
 
 /**
  * Understands the structure of the editor page and crafts the example experience
@@ -62,14 +62,11 @@ class ExampleEditor {
   }
 
   showExample() {
-    const extensions = this.extensions;
     const extensionClasses: Array<string> = [];
 
-    for (const extension of extensions) {
+    for (const extensionName of ExtensionNames) {
       // TODO: Determine how to pass options.
-      extensionClasses.push(
-        `new ${this.typeExtensions}.${extension.constructor.name}()`
-      );
+      extensionClasses.push(`new ${this.typeExtensions}.${extensionName}()`);
     }
 
     const optionsStub = Object.assign({}, this.options, {
