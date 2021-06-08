@@ -12,7 +12,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: bahmutov/npm-install@v1
     - name: Build docs
-      run: yarn run docs
+      run: yarn run docs || echo "Unable to build docs."
     - name: Add example
       run: |
         mkdir -p docs/example
